@@ -1,4 +1,3 @@
-import { Timestamp } from "mongodb";
 import { Schema, model, models } from "mongoose";
 
 const PropertySchema = new Schema(
@@ -45,7 +44,7 @@ const PropertySchema = new Schema(
       type: Number,
       require: true,
     },
-    ameneties: [
+    amenities: [
       {
         type: String,
       },

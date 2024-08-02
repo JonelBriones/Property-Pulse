@@ -1,9 +1,15 @@
 import React from "react";
 import PropertyCard from "./PropertyCard";
 import Link from "next/link";
-import { fetchProperties } from "@/app/properties/page";
+import connectDB from "@/config/database";
+import Property from "@/models/Property";
+// import { fetchProperties } from "@/app/properties/page";
+
 const HomeProperties = async () => {
-  const properties = await fetchProperties();
+  await connectDB();
+  const properties = await Property.find({}).lean();
+
+  // const properties = await fetchProperties();
   const recentProperties = properties
     .sort(() => Math.random() - Math.random())
     .slice(0, 3);
@@ -27,7 +33,7 @@ const HomeProperties = async () => {
       <section className="m-auto max-w-lg my-10 px-6">
         <Link
           href="/properties"
-          className="block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
+          className="block ∂bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700"
         >
           View All Properties
         </Link>
