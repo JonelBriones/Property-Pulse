@@ -1,13 +1,12 @@
+import updateProperty from "@/app/actions/updateProperty";
 import React from "react";
 
 const PropertyEditForm = ({ property }) => {
-  console.log(property);
+  const updatePropertyById = updateProperty.bind(null, property._id);
 
   return (
-    <form>
-      <h2 className="text-3xl text-center font-semibold mb-6">
-        Update Property
-      </h2>
+    <form action={updatePropertyById}>
+      <h2 className="text-3xl text-center font-semibold mb-6">Edit Property</h2>
 
       <div className="mb-4">
         <label htmlFor="type" className="block text-gray-700 font-bold mb-2">
