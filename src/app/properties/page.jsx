@@ -2,25 +2,14 @@ import React from "react";
 import PropertyCard from "@/components/PropertyCard";
 import connectDB from "@/config/database";
 import Property from "@/models/Property";
-
-// export async function fetchProperties() {
-//   try {
-//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_DOMAIN}/properties`);
-//     if (!res.ok) {
-//       throw new Error("Failed to fetch data!");
-//     }
-//     console.log("PROPERTIES", res);
-//     return res.json();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-const PropertiesPage = async () => {
+import Pagination from "@/components/Pagination";
+const PropertiesPage = async ({ searchParams: { page = 1, pageSize = 2 } }) => {
   await connectDB();
-  // const properties = await fetchProperties();
-  const properties = await Property.find({}).lean();
 
-  // Sort properties by date
+  const skip = (page - 1) * pageSize;
+  const total = await Property.countDocuments({});
+  const properties = await Property.find({}).skip(skip).limit(pageSize);
+  const showPagination = total > pageSize;
   properties.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   return (
@@ -35,6 +24,13 @@ const PropertiesPage = async () => {
                 <PropertyCard key={property._id} property={property} />
               ))}
             </div>
+          )}
+          {showPagination && (
+            <Pagination
+              page={parseInt(page)}
+              pageSize={parseInt(pageSize)}
+              totalItems={total}
+            />
           )}
         </div>
       </section>
